@@ -152,7 +152,7 @@ export default function Component() {
 
         {/* Time Display */}
         <View className='items-center mt-32'>
-          <Text className='text-6xl font-extrabold text-[#3C4043]'>
+          <Text className='text-5xl font-bold text-[#3C4043]'>
             {formatTime(currentTime)}
           </Text>
         </View>
