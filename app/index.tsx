@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,71 +7,72 @@ import {
   SafeAreaView,
   ScrollView,
   Modal,
-} from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { UserRound, RotateCw, X } from 'lucide-react-native'
-import { router } from 'expo-router'
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserRound, RotateCw, X } from 'lucide-react-native';
+import { router } from 'expo-router';
+import Hello from './icon';
 
-const PASS_COUNT_KEY = '@pass_count'
+const PASS_COUNT_KEY = '@pass_count';
 
 export default function HomeScreen() {
-  const [passCount, setPassCount] = useState(1)
-  const [isLoading, setIsLoading] = useState(true)
+  const [passCount, setPassCount] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Load saved pass count on initial mount
   useEffect(() => {
-    loadPassCount()
-  }, [])
+    loadPassCount();
+  }, []);
 
   const loadPassCount = async () => {
     try {
-      const savedCount = await AsyncStorage.getItem(PASS_COUNT_KEY)
+      const savedCount = await AsyncStorage.getItem(PASS_COUNT_KEY);
       if (savedCount !== null) {
-        setPassCount(parseInt(savedCount))
+        setPassCount(parseInt(savedCount));
       }
     } catch (error) {
-      console.error('Error loading pass count:', error)
+      console.error('Error loading pass count:', error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const savePassCount = async (count) => {
     try {
-      await AsyncStorage.setItem(PASS_COUNT_KEY, count.toString())
+      await AsyncStorage.setItem(PASS_COUNT_KEY, count.toString());
     } catch (error) {
-      console.error('Error saving pass count:', error)
+      console.error('Error saving pass count:', error);
     }
-  }
+  };
 
   const handleBuyPass = async () => {
-    const newCount = passCount + 1
-    setPassCount(newCount)
-    await savePassCount(newCount)
-  }
+    const newCount = passCount + 1;
+    setPassCount(newCount);
+    await savePassCount(newCount);
+  };
 
   const handleRefresh = async () => {
-    setPassCount(1)
-    await savePassCount(1)
-  }
+    setPassCount(1);
+    await savePassCount(1);
+  };
 
   if (isLoading) {
     return (
       <SafeAreaView className='flex-1 bg-[#F2F2F9] justify-center items-center'>
         <Text className='text-white text-lg'>Loading passes...</Text>
       </SafeAreaView>
-    )
+    );
   }
 
   return (
     <SafeAreaView className='flex-1 bg-[#F2F2F9'>
       {/* Top Nav */}
-      <View className='w-full  px-4 py-4 flex-row justify-between'>
+      <View className='w-full bg-[#DCDCAA] px-4 py-4 flex-row justify-between'>
         <TouchableOpacity onPress={handleRefresh}>
-          <RotateCw color='#0092D2' size={24} />
+          <Hello />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleRefresh}>
-          <UserRound color='#0092D2' size={28} />
+          <Hello />
         </TouchableOpacity>
       </View>
 
@@ -98,25 +99,26 @@ export default function HomeScreen() {
 
       {/* Bottom Button */}
       <TouchableOpacity
-        className='mx-5 rounded-xl bg-[#F7A82F] py-2.5 mb-4'
+        className='mx-5 rounded-xl bg-[#F7A82F] py-2.5 mb-4 flex flex-row justify-center items-center'
         onPress={handleBuyPass}
       >
         <Text className='text-white text-center text-xl font-semibold'>
           Buy Passes
         </Text>
+        <Hello />
       </TouchableOpacity>
     </SafeAreaView>
-  )
+  );
 }
 
 function Pass() {
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const handlePassPress = () => {
-    router.push('/ticket')
-  }
+    router.push('/ticket');
+  };
 
   const getExpirationTime = () => {
-    const expirationDate = new Date(new Date().getTime() + 30 * 60000)
+    const expirationDate = new Date(new Date().getTime() + 30 * 60000);
     return (
       expirationDate.toLocaleDateString('en-US', {
         month: 'long',
@@ -129,8 +131,8 @@ function Pass() {
         minute: '2-digit',
         hour12: true,
       })
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -261,8 +263,8 @@ function Pass() {
                   marginBottom: 30,
                 }}
                 onPress={() => {
-                  handlePassPress()
-                  setIsModalVisible(false)
+                  handlePassPress();
+                  setIsModalVisible(false);
                 }}
               >
                 <Text
@@ -281,5 +283,5 @@ function Pass() {
         </View>
       </Modal>
     </>
-  )
+  );
 }
